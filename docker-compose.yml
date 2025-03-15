@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    restart: always
+    ports:
+      - "8005:80"
+    environment:
+      WORDPRESS_DB_HOST: it_hackathon:3306
+      WORDPRESS_DB_NAME: it_hackathon
+      WORDPRESS_DB_USER: user
+      WORDPRESS_DB_PASSWORD: userpassword
+    volumes:
+      - /home/por/it-hackathon/wordpress_data:/var/www/html
+    networks:
+      - wordpress_network
+
+  it_hackathon:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: it_hackathon
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    volumes:
+      - /home/por/it-hackathon/db_data:/var/lib/mysql
+    networks:
+      - wordpress_network
+
+networks:
+  wordpress_network:
+    driver: bridge
